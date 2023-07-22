@@ -43,8 +43,8 @@ Design pattern
 <tr><td colspan="1" rowspan="4" valign="top">App. module </td><td colspan="1" valign="top">App.component </td><td colspan="1" valign="top">Initial component. Includes router-outlet and header.component </td></tr>
 <tr><td colspan="1" valign="top">Photos.component </td><td colspan="1" valign="top">Component we use to show the infinite photos feature </td></tr>
 <tr><td colspan="1" valign="top">App.service </td><td colspan="1" valign="top">Service that we use to make requests and store data that will be used from the components </td></tr>
-<tr><td colspan="1" valign="top">App.routing.module </td><td colspan="1" valign="top">Includes all the routes of the app and uses lazy loading for the pages of favorites and details </td></tr>
-<tr><td colspan="1" valign="top">Favourites.module </td><td colspan="1" valign="top">Favorites.component </td><td colspan="1">Component with a photo list of the favorite photos. Includes header </td></tr>
+<tr><td colspan="1" valign="top">App-routing.module </td><td colspan="1" valign="top">Includes all the routes of the app and uses lazy loading for the pages of favorites and details </td></tr>
+<tr><td colspan="1" valign="top">Favorites.module </td><td colspan="1" valign="top">Favorites.component </td><td colspan="1">Component with a photo list of the favorite photos. Includes header </td></tr>
 <tr><td colspan="1" valign="top">Detail.module </td><td colspan="1" valign="top">Details.component </td><td colspan="1">Show the specified photo that was selected at favorites. Includes header </td></tr>
 <tr><td colspan="1" rowspan="5" valign="top">Shared.module </td><td colspan="1" valign="top">Header.component </td><td colspan="1" valign="top">Header that we use to all of the pages to navigate </td></tr>
 <tr><td colspan="1" valign="top">Loader.component </td><td colspan="1" valign="top">Loader component that will be used for the subscriptions </td></tr>
