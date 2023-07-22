@@ -6,7 +6,7 @@ export interface IPexelsListResponse {
   next_page: number;
 }
 
-interface IPexelsPhoto {
+export interface IPexelsPhoto {
   id: number;
   width: number;
   height: number;

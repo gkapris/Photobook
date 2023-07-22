@@ -6,7 +6,7 @@
     fxLayoutGap="16px"
     *ngIf="photos | async as photosList"
   >
-    <div class="photo-item" *ngFor="let photo of photosList.photos">
+    <div class="photo-item" *ngFor="let photo of photosList">
       <mat-card class="photo-card">
         <img
           mat-card-image
