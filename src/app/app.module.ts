@@ -5,6 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
+<<<<<<< Updated upstream
+=======
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoaderInterceptor } from './shared/interceptors/loader.interceptor';
+>>>>>>> Stashed changes
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,7 +19,17 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     SharedModule,
   ],
+<<<<<<< Updated upstream
   providers: [],
+=======
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true,
+    },
+  ],
+>>>>>>> Stashed changes
   bootstrap: [AppComponent],
 })
 export class AppModule {}
