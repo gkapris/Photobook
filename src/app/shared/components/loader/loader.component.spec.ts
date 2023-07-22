@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { LoaderComponent } from './loader.component';
+import { LoaderService } from '../../services/loader.service';
+
+const mockService = {
+  getLoading: jest.fn(() => true),
+};
 
 describe('LoaderComponent', () => {
   let component: LoaderComponent;
@@ -8,7 +12,8 @@ describe('LoaderComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LoaderComponent]
+      declarations: [LoaderComponent],
+      providers: [{ provide: LoaderService, useValue: mockService }],
     });
     fixture = TestBed.createComponent(LoaderComponent);
     component = fixture.componentInstance;
@@ -17,5 +22,12 @@ describe('LoaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#setLoading', () => {
+    it('should return the value from the loader service', () => {
+      const returnedValue = component.setLoading();
+      expect(returnedValue).toEqual(true);
+    });
   });
 });
