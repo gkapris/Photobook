@@ -1,0 +1,23 @@
+<header class="header" fxLayout="column" fxLayoutAlign="center center">
+  <h1 class="header-title">Photo Library</h1>
+  <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="center center">
+    <button
+      mat-raised-button
+      [color]="isActive('/photos') ? 'primary' : ''"
+      routerLink="/photos"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Photos
+    </button>
+    <button
+      mat-raised-button
+      [color]="isActive('/favorites') ? 'primary' : ''"
+      routerLink="/favorites"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Favorites
+    </button>
+  </div>
+</header>
