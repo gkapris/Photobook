@@ -1,0 +1,23 @@
+<div class="photo-list">
+  <h2>List of Photos</h2>
+  <div
+    class="photo-grid"
+    fxLayout="row wrap"
+    fxLayoutGap="16px"
+    *ngIf="photos | async as photosList"
+  >
+    <div class="photo-item" *ngFor="let photo of photosList">
+      <mat-card class="photo-card">
+        <img
+          mat-card-image
+          [src]="photo.src.large"
+          alt="{{ photo.alt }}"
+          class="photo-image"
+        />
+        <mat-card-content>
+          <h3>{{ photo.photographer }}</h3>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
