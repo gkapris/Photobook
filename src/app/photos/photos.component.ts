@@ -17,7 +17,7 @@ export class PhotosComponent implements OnInit {
     this.photos = this.appService.photosList$.asObservable();
   }
 
-  // addImageToFavorites(id: number) {
-  //   console.log(id);
-  // }
+  addToFavorites(id: number) {
+    this.appService.saveFavoritePhoto(id);
+  }
 }

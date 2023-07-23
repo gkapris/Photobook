@@ -1,7 +1,7 @@
-import { BehaviorSubject, interval, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, interval, switchMap, tap } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PexelsURLS } from './shared/constants/PexelsURLS.enum';
+import { PexelsURLSEnum } from './shared/constants/URLS_Enums';
 import { PexelsAPIKey } from './shared/constants/PhotoAPIKey';
 import {
   IPexelsListResponse,
@@ -13,14 +13,19 @@ import {
 })
 export class AppService {
   photosList$ = new BehaviorSubject<IPexelsPhoto[]>([]);
+  private favoritePhotos: number[] = [];
+  private headers = new HttpHeaders({
+    Authorization: PexelsAPIKey,
+  });
   constructor(private http: HttpClient) {}
 
+  getFavoritePhotosList(): number[] {
+    return this.favoritePhotos;
+  }
+
   getPhotoList(): void {
-    const headers = new HttpHeaders({
-      Authorization: PexelsAPIKey,
-    });
     let counter = 1;
-    interval(10000)
+    interval(5000)
       .pipe(
         switchMap(() => {
           const params = new HttpParams()
@@ -28,10 +33,10 @@ export class AppService {
             .set('per_page', '4')
             .set('page', counter++);
           return this.http.get<IPexelsListResponse>(
-            PexelsURLS.GetPhotosListByCategory,
+            PexelsURLSEnum.GetPhotosListByCategory,
             {
               params,
-              headers,
+              headers: this.headers,
             }
           );
         }),
@@ -41,5 +46,18 @@ export class AppService {
         })
       )
       .subscribe();
+  }
+
+  saveFavoritePhoto(id: number) {
+    this.favoritePhotos.push(id);
+    console.log(this.favoritePhotos);
+  }
+
+  getFavoritePhoto(id: number): Observable<IPexelsPhoto> {
+    const params = new HttpParams().set('photos', id);
+    return this.http.get<IPexelsPhoto>(PexelsURLSEnum.GetPhotoById, {
+      params,
+      headers: this.headers,
+    });
   }
 }

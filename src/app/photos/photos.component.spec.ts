@@ -31,4 +31,13 @@ describe('PhotosComponent', () => {
       expect(service.getPhotoList).toHaveBeenCalled();
     });
   });
+
+  describe('#addToFavorites', () => {
+    it('should add id to the savedPhotoList', () => {
+      const testingValue = 1234;
+      component.addToFavorites(testingValue);
+      const returnedValue = service.getFavoritePhotosList();
+      expect(returnedValue).toContain(testingValue);
+    });
+  });
 });
