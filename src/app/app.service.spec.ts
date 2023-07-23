@@ -113,18 +113,20 @@ describe('AppService', () => {
     });
   });
 
-  describe('#getFavoritePhoto', () => {
+  describe('#getFavoritePhotoById', () => {
     it('should fetch a favorite photo by ID', () => {
       const mockPhotoId = 123;
       const mockPhotoData: IPexelsPhoto = {} as IPexelsPhoto;
 
-      service.getFavoritePhoto(mockPhotoId).subscribe((photo: IPexelsPhoto) => {
-        expect(photo).toBeTruthy();
-        expect(photo).toEqual(mockPhotoData);
-      });
+      service
+        .getFavoritePhotoById(mockPhotoId)
+        .subscribe((photo: IPexelsPhoto) => {
+          expect(photo).toBeTruthy();
+          expect(photo).toEqual(mockPhotoData);
+        });
 
       const request = httpMock.expectOne(
-        `${PexelsURLSEnum.GetPhotoById}?photos=${mockPhotoId}`
+        `${PexelsURLSEnum.GetPhotoById}${mockPhotoId}`
       );
       expect(request.request.method).toBe('GET');
       request.flush(mockPhotoData);

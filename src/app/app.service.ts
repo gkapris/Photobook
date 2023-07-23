@@ -50,13 +50,10 @@ export class AppService {
 
   saveFavoritePhoto(id: number) {
     this.favoritePhotos.push(id);
-    console.log(this.favoritePhotos);
   }
 
-  getFavoritePhoto(id: number): Observable<IPexelsPhoto> {
-    const params = new HttpParams().set('photos', id);
-    return this.http.get<IPexelsPhoto>(PexelsURLSEnum.GetPhotoById, {
-      params,
+  getFavoritePhotoById(id: number): Observable<IPexelsPhoto> {
+    return this.http.get<IPexelsPhoto>(PexelsURLSEnum.GetPhotoById + id, {
       headers: this.headers,
     });
   }
