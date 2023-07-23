@@ -12,6 +12,7 @@ import { LoaderInterceptor } from './shared/interceptors/loader.interceptor';
 
 import { MatCardModule } from '@angular/material/card';
 import { FavoritesModule } from './favorites/favorites.module';
+import { DetailsModule } from './details/details.module';
 
 @NgModule({
   declarations: [AppComponent, PhotosComponent],
@@ -19,6 +20,7 @@ import { FavoritesModule } from './favorites/favorites.module';
     BrowserModule,
     SharedModule,
     FavoritesModule,
+    DetailsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,

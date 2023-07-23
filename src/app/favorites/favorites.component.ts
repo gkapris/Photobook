@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
 import { IPexelsPhoto } from '../shared/interfaces/IPexelsPhoto.interface';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favorites',
@@ -13,7 +14,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [new Subscription()];
   favoritePhotos: IPexelsPhoto[] = [];
 
-  constructor(private appService: AppService) {}
+  constructor(private appService: AppService, private router: Router) {}
 
   ngOnInit(): void {
     this.favoritePhotoList = this.appService.getFavoritePhotosList();
@@ -30,5 +31,9 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  navigateToPhotoDetails(id: number) {
+    this.router.navigate(['/details', id]);
   }
 }
