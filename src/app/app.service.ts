@@ -1,8 +1,8 @@
-import { BehaviorSubject, Observable, interval, switchMap, tap } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PexelsURLSEnum } from './shared/constants/URLS_Enums';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { PexelsAPIKey } from './shared/constants/PhotoAPIKey';
+import { PexelsURLSEnum } from './shared/constants/URLS.enum';
 import {
   IPexelsListResponse,
   IPexelsPhoto,
@@ -13,39 +13,38 @@ import {
 })
 export class AppService {
   photosList$ = new BehaviorSubject<IPexelsPhoto[]>([]);
+  pageRequestedCounter: number = 0;
   private favoritePhotos: number[] = [];
   private headers = new HttpHeaders({
     Authorization: PexelsAPIKey,
   });
+
   constructor(private http: HttpClient) {}
+
+  getPhotoList(): Observable<IPexelsListResponse> {
+    this.pageRequestedCounter++;
+    const params = new HttpParams()
+      .set('query', 'nature')
+      .set('per_page', '4')
+      .set('page', this.pageRequestedCounter);
+
+    return this.http
+      .get<IPexelsListResponse>(PexelsURLSEnum.GetPhotosListByCategory, {
+        params,
+        headers: this.headers,
+      })
+      .pipe(
+        tap((response: IPexelsListResponse) => {
+          this.photosList$.next([
+            ...this.photosList$.getValue(),
+            ...response.photos,
+          ]);
+        })
+      );
+  }
 
   getFavoritePhotosList(): number[] {
     return this.favoritePhotos;
-  }
-
-  getPhotoList(): void {
-    let counter = 1;
-    interval(5000)
-      .pipe(
-        switchMap(() => {
-          const params = new HttpParams()
-            .set('query', 'nature')
-            .set('per_page', '4')
-            .set('page', counter++);
-          return this.http.get<IPexelsListResponse>(
-            PexelsURLSEnum.GetPhotosListByCategory,
-            {
-              params,
-              headers: this.headers,
-            }
-          );
-        }),
-        tap((response: IPexelsListResponse) => {
-          const currentResponse = this.photosList$.getValue();
-          this.photosList$.next([...currentResponse, ...response.photos]);
-        })
-      )
-      .subscribe();
   }
 
   saveFavoritePhoto(id: number) {
