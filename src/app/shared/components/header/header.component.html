@@ -3,17 +3,19 @@
   <div fxLayout="row" fxLayoutGap="100px" fxLayoutAlign="center center">
     <button
       mat-raised-button
-      [color]="isHomeActive ? 'primary' : ''"
+      [color]="isActive('/photos') ? 'primary' : ''"
       routerLink="/photos"
       routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
     >
       Photos
     </button>
     <button
       mat-raised-button
-      [color]="isFavoritesActive ? 'primary' : ''"
+      [color]="isActive('/favorites') ? 'primary' : ''"
       routerLink="/favorites"
       routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
     >
       Favorites
     </button>

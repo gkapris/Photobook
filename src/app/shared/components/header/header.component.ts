@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -6,6 +7,9 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  @Input() isHomeActive: boolean = true;
-  @Input() isFavoritesActive: boolean = false;
+  constructor(private router: Router) {}
+
+  isActive(path: string): boolean {
+    return this.router.url === path;
+  }
 }
