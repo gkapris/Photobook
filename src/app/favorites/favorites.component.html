@@ -1,11 +1,16 @@
 <div class="photo-list">
   <h2>Favorite Photos</h2>
   <div class="photo-grid" fxLayout="row wrap" fxLayoutGap="16px">
-    <div class="photo-item">
+    <div class="photo-item" *ngFor="let photo of favoritePhotos">
       <mat-card class="photo-card">
-        <img mat-card-image class="photo-image" />
+        <img
+          mat-card-image
+          [src]="photo.src.large"
+          alt="{{ photo.alt }}"
+          class="photo-image"
+        />
         <mat-card-content>
-          <!-- <h3>{{ photo.photographer }}</h3> -->
+          <h3>{{ photo.photographer }}</h3>
         </mat-card-content>
       </mat-card>
     </div>
