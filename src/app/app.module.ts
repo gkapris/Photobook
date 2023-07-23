@@ -10,21 +10,20 @@ import { PhotosComponent } from './photos/photos.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoaderInterceptor } from './shared/interceptors/loader.interceptor';
 
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @NgModule({
   declarations: [AppComponent, PhotosComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
     SharedModule,
+    FavoritesModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
     HttpClientModule,
-    MatListModule,
-    MatIconModule,
     MatCardModule,
+    AppRoutingModule,
   ],
 
   providers: [

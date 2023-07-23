@@ -61,14 +61,14 @@ describe('AppService', () => {
 
     expect(mockPhotosList$.getValue()).toEqual([]);
 
-    jest.advanceTimersByTime(1000);
+    jest.advanceTimersByTime(10000);
 
     expect(mockHttpClient.get).toHaveBeenCalledTimes(1);
     // expect(mockHttpClient.get).toHaveBeenCalledWith(
     //   PexelsURLS.GetPhotosListByCategory
     // );
 
-    jest.advanceTimersByTime(1000);
+    jest.advanceTimersByTime(10000);
 
     expect(mockHttpClient.get).toHaveBeenCalledTimes(2);
 

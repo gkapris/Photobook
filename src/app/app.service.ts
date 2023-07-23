@@ -20,7 +20,7 @@ export class AppService {
       Authorization: PexelsAPIKey,
     });
     let counter = 1;
-    interval(1000)
+    interval(10000)
       .pipe(
         switchMap(() => {
           const params = new HttpParams()
