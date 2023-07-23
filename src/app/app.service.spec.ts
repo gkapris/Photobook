@@ -9,8 +9,7 @@ import {
   IPexelsListResponse,
   IPexelsPhoto,
 } from './shared/interfaces/IPexelsPhoto.interface';
-import { HttpClient } from '@angular/common/http';
-import { PexelsURLSEnum } from './shared/constants/URLS_Enums';
+import { PexelsURLSEnum } from './shared/constants/URLS.enum';
 
 describe('AppService', () => {
   let service: AppService;
@@ -39,68 +38,37 @@ describe('AppService', () => {
     httpMock.verify();
   });
 
-  describe.skip('#getPhotoList', () => {
-    // Incomplete unit test due time shortage
-    it('should fetch and update photo list periodically', () => {
-      jest.useFakeTimers();
-
-      const photosListResponse: IPexelsListResponse = {
-        total_results: 4,
-        page: 1,
-        per_page: 4,
+  describe('#getPhotoList', () => {
+    it('should fetch a list of photos', () => {
+      const mockResponse: IPexelsListResponse = {
         photos: [
-          { id: 1, url: 'url1' },
-          { id: 2, url: 'url2' },
-          { id: 3, url: 'url3' },
-          { id: 4, url: 'url4' },
+          {
+            id: 1,
+            src: { large: 'photo1.jpg' },
+            photographer: 'Photographer 1',
+            alt: 'Photo 1',
+          },
+          {
+            id: 2,
+            src: { large: 'photo2.jpg' },
+            photographer: 'Photographer 2',
+            alt: 'Photo 2',
+          },
         ],
       } as IPexelsListResponse;
-      const mockHttpClient = TestBed.inject(HttpClient);
-      jest.spyOn(mockHttpClient, 'get').mockReturnValue(of(photosListResponse));
 
-      service.getPhotoList();
+      service.getPhotoList().subscribe((response) => {
+        expect(response).toEqual(mockResponse);
+        expect(mockPhotosList$.getValue().length).toBe(
+          mockResponse.photos.length
+        );
+      });
 
-      expect(mockPhotosList$.getValue()).toEqual([]);
-
-      jest.advanceTimersByTime(10000);
-
-      expect(mockHttpClient.get).toHaveBeenCalledTimes(1);
-      // expect(mockHttpClient.get).toHaveBeenCalledWith(
-      //   PexelsURLSEnum.GetPhotosListByCategory
-      // );
-
-      jest.advanceTimersByTime(10000);
-
-      expect(mockHttpClient.get).toHaveBeenCalledTimes(2);
-
-      const photosListResponse2: IPexelsListResponse = {
-        ...photosListResponse,
-        page: 2,
-        photos: [
-          { id: 5, url: 'url5' },
-          { id: 6, url: 'url6' },
-          { id: 7, url: 'url7' },
-          { id: 8, url: 'url8' },
-        ],
-      } as IPexelsListResponse;
-      jest
-        .spyOn(mockHttpClient, 'get')
-        .mockReturnValue(of(photosListResponse2));
-
-      jest.advanceTimersByTime(1000);
-
-      // expect(mockHttpClient.get).toHaveBeenCalledWith(
-      //   PexelsURLSEnum.GetPhotosListByCategory,
-      //   { params: { page: 2 } }
-      // );
-
-      expect(mockPhotosList$.getValue()).toEqual([
-        // ...photosListResponse.photos,
-        // ...photosListResponse2.photos,
-      ]);
-
-      // Cleanup fake timers
-      jest.useRealTimers();
+      const request = httpMock.expectOne(
+        `${PexelsURLSEnum.GetPhotosListByCategory}?query=nature&per_page=4&page=1`
+      );
+      expect(request.request.method).toBe('GET');
+      request.flush(mockResponse);
     });
   });
 
@@ -116,7 +84,12 @@ describe('AppService', () => {
   describe('#getFavoritePhotoById', () => {
     it('should fetch a favorite photo by ID', () => {
       const mockPhotoId = 123;
-      const mockPhotoData: IPexelsPhoto = {} as IPexelsPhoto;
+      const mockPhotoData: IPexelsPhoto = {
+        id: mockPhotoId,
+        src: { large: 'photo.jpg' },
+        photographer: 'Photographer',
+        alt: 'Photo',
+      } as IPexelsPhoto;
 
       service
         .getFavoritePhotoById(mockPhotoId)
