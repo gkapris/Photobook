@@ -9,11 +9,6 @@ const routes: Routes = [
   { path: 'photos', component: PhotosComponent },
   { path: 'favorites', component: FavoritesComponent },
   { path: 'details/:id', component: DetailsComponent },
-  // {
-  //   path: 'favorites',
-  //   loadChildren: () =>
-  //     import('./favorites/favorites.module').then((m) => m.FavoritesModule),
-  // },
 ];
 
 @NgModule({
