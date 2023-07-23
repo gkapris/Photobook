@@ -8,6 +8,7 @@
           [src]="photo.src.large"
           alt="{{ photo.alt }}"
           class="photo-image"
+          (click)="navigateToPhotoDetails(photo.id)"
         />
         <mat-card-content>
           <h3>{{ photo.photographer }}</h3>

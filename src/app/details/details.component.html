@@ -1,0 +1,13 @@
+<div class="details-view">
+  <mat-card class="photo-card" *ngIf="photo | async as photoDetail">
+    <img
+      mat-card-image
+      [src]="photoDetail.src.large"
+      alt="{{ photoDetail.alt }}"
+      class="photo-image"
+    />
+    <mat-card-content>
+      <h3>{{ photoDetail.photographer }}</h3>
+    </mat-card-content>
+  </mat-card>
+</div>
