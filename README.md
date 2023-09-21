@@ -25,7 +25,6 @@ to save photos to your “Favorites” library
 - Located at /photos/:id path. 
 - Shows just a single full-screen photo, instead of a grid. 
 - Should contain the “Remove from favorites” button. 
-- The header remains the same on this page. 
 
 List view wireframe 
 
@@ -57,7 +56,7 @@ Issue cases
 
 Initialize application 
 
-1. Create a new angular app with the name XM\_Kapris\_FE\_testV4 
+1. Create a new angular app with the name Photo-book 
    1. Angular routing included 
    1. Select SCSS for styling 
 1. Add Angular Material 

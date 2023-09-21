@@ -1,4 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { PexelsAPIKey } from './shared/constants/PhotoAPIKey';
@@ -7,6 +12,8 @@ import {
   IPexelsListResponse,
   IPexelsPhoto,
 } from './shared/interfaces/IPexelsPhoto.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { RequestErrorPopupComponent } from './shared/components/request-error-pop-up/request-error-pop-up.component';
 
 @Injectable({
   providedIn: 'root',
@@ -19,13 +26,13 @@ export class AppService {
     Authorization: PexelsAPIKey,
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public dialog: MatDialog) {}
 
   getPhotoList(): Observable<IPexelsListResponse> {
     this.pageRequestedCounter++;
     const params = new HttpParams()
       .set('query', 'nature')
-      .set('per_page', '4')
+      .set('per_page', 16)
       .set('page', this.pageRequestedCounter);
 
     return this.http
@@ -51,9 +58,22 @@ export class AppService {
     this.favoritePhotos.push(id);
   }
 
+  removeFavoritePhoto(id: number): void {
+    this.favoritePhotos = this.favoritePhotos.filter((inId) => inId !== id);
+  }
+
   getFavoritePhotoById(id: number): Observable<IPexelsPhoto> {
     return this.http.get<IPexelsPhoto>(PexelsURLSEnum.GetPhotoById + id, {
       headers: this.headers,
+    });
+  }
+
+  showErrorPopup(error: HttpErrorResponse): void {
+    this.dialog.open(RequestErrorPopupComponent, {
+      data: {
+        errorStatus: error.status,
+        errorContent: error.message,
+      },
     });
   }
 }

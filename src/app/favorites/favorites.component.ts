@@ -3,6 +3,7 @@ import { AppService } from '../app.service';
 import { IPexelsPhoto } from '../shared/interfaces/IPexelsPhoto.interface';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-favorites',
@@ -20,11 +21,14 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     this.favoritePhotoList = this.appService.getFavoritePhotosList();
     this.favoritePhotoList.forEach((id) => {
       this.subscriptions.push(
-        this.appService
-          .getFavoritePhotoById(id)
-          .subscribe((photo: IPexelsPhoto) => {
+        this.appService.getFavoritePhotoById(id).subscribe(
+          (photo: IPexelsPhoto) => {
             this.favoritePhotos.push(photo);
-          })
+          },
+          (error: HttpErrorResponse) => {
+            this.appService.showErrorPopup(error);
+          }
+        )
       );
     });
   }

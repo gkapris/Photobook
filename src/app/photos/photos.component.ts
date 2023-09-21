@@ -1,6 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, timer } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable, Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { AppService } from '../app.service';
+import { RequestErrorPopupComponent } from '../shared/components/request-error-pop-up/request-error-pop-up.component';
 import { IPexelsPhoto } from '../shared/interfaces/IPexelsPhoto.interface';
 
 @Component({
@@ -9,51 +19,47 @@ import { IPexelsPhoto } from '../shared/interfaces/IPexelsPhoto.interface';
   styleUrls: ['./photos.component.scss'],
 })
 export class PhotosComponent implements OnInit, OnDestroy {
-  photos: Observable<IPexelsPhoto[]> = new Observable<IPexelsPhoto[]>();
+  photosList$: Observable<IPexelsPhoto[]> = new Observable<IPexelsPhoto[]>();
   private subscriptions: Subscription[] = [];
-  private fetchingData = false;
 
   constructor(private readonly appService: AppService) {}
 
   ngOnInit(): void {
-    this.appService.getPhotoList();
-    this.photos = this.appService.photosList$.asObservable();
-
-    this.subscriptions.push(
-      timer(0, 200).subscribe(() => {
-        if (this.isScrollAtBottom() && !this.fetchingData) {
-          this.fetchingData = true;
-          this.appService.getPhotoList().subscribe(() => {
-            this.fetchingData = false;
-          });
-        }
-      })
-    );
+    this.loadNewPhotos();
+    this.photosList$ = this.appService.photosList$.asObservable();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
-  addToFavorites(id: number) {
-    this.appService.saveFavoritePhoto(id);
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event): void {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY || window.pageYOffset;
+    const scrollThreshold = 20;
+
+    if (documentHeight - scrollTop - windowHeight <= scrollThreshold) {
+      this.loadNewPhotos();
+    }
   }
 
-  private isScrollAtBottom(): boolean {
-    const windowHeight =
-      'innerHeight' in window
-        ? window.innerHeight
-        : document.documentElement.offsetHeight;
-    const body = document.body;
-    const html = document.documentElement;
-    const docHeight = Math.max(
-      body.scrollHeight,
-      body.offsetHeight,
-      html.clientHeight,
-      html.scrollHeight,
-      html.offsetHeight
+  loadNewPhotos() {
+    const randomDelay = Math.floor(Math.random() * 101) + 200;
+    this.subscriptions.push(
+      this.appService
+        .getPhotoList()
+        .pipe(delay(randomDelay))
+        .subscribe({
+          error: (error: HttpErrorResponse) => {
+            this.appService.showErrorPopup(error);
+          },
+        })
     );
-    const scrollY = window.screenY || document.documentElement.scrollTop;
-    const scrollPosition = scrollY + windowHeight;
-    return scrollPosition >= docHeight;
+  }
+
+  addToFavorites(id: number) {
+    this.appService.saveFavoritePhoto(id);
   }
 }
