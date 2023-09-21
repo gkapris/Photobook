@@ -17,4 +17,8 @@ export class DetailsComponent {
     const photoId = Number(this.route.snapshot.paramMap.get('id'));
     this.photo = this.appService.getFavoritePhotoById(photoId);
   }
+
+  deletePhoto(id: number) {
+    this.appService.removeFavoritePhoto(id);
+  }
 }
